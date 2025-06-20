@@ -1,36 +1,45 @@
 import { AppwriteService } from "../appwrite/client"
 import { authErrorHandler } from "~/utils/error/handler"
 import { ID } from "react-native-appwrite"
+import { attempt } from "~/utils/error/async"
 
 class AuthService extends AppwriteService {
-   // method to login a user
+   /*
+    * this method helps getting the account from the server
+    * **/
    public async signIn(email: string, password: string) {
-      try {
-         await this.account.createEmailPasswordSession(email, password)
-         return null
-      } catch (e) {
-         return authErrorHandler.handleErrors(e)
+      const result = await attempt(() => this.account.createEmailPasswordSession(email, password))
+      if (!result.ok) {
+         return authErrorHandler.handleErrors(result.error)
       }
+      return null
    }
 
-   // method to register a user
    public async register(email: string, password: string, name: string) {
-      try {
-         await this.account.create(ID.unique(), email, password, name)
-         await this.signIn(email, password)
-         return null
-      } catch (e) {
-         return authErrorHandler.handleErrors(e)
+      const createResult = await attempt(() =>
+         this.account.create(ID.unique(), email, password, name)
+      )
+      if (!createResult.ok) {
+         console.log("Error creating account:", createResult.error)
+         return authErrorHandler.handleErrors(createResult.error)
       }
+      return await this.signIn(email, password)
    }
 
-   // method to get current user info
    public async getCurrentUser() {
-      try {
-         return await this.account.get()
-      } catch (e) {
-         return authErrorHandler.handleErrors(e)
+      const result = await attempt(() => this.account.get())
+      if (!result.ok) {
+         return authErrorHandler.handleErrors(result.error)
       }
+      return result.data
+   }
+
+   public async signOut() {
+      const result = await attempt(() => this.account.deleteSessions())
+      if (!result.ok) {
+         return authErrorHandler.handleErrors(result.error)
+      }
+      return null
    }
 }
 

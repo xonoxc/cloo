@@ -10,6 +10,11 @@ import { useColorScheme } from "~/lib/useColorScheme"
 import { PortalHost } from "@rn-primitives/portal"
 import { ThemeToggle } from "~/components/ThemeToggle"
 import { setAndroidNavigationBar } from "~/lib/android-navigation-bar"
+import { authService } from "~/services/auth/auth"
+import { useAuthStore } from "~/store/auth"
+import { ApplicationError } from "~/utils/error/error"
+import { ToastContainer, ToastProvider } from "~/hooks/useToast"
+import { NavigationContainer } from "@react-navigation/native"
 
 const LIGHT_THEME: Theme = {
    ...DefaultTheme,
@@ -21,7 +26,7 @@ const DARK_THEME: Theme = {
 }
 
 export {
-   // Catch any errors thrown by the Layout component.
+   // Preventing redirects from being shown in the web console
    ErrorBoundary,
 } from "expo-router"
 
@@ -29,8 +34,20 @@ export default function RootLayout() {
    const hasMounted = React.useRef(false)
    const { colorScheme, isDarkColorScheme } = useColorScheme()
    const [isColorSchemeLoaded, setIsColorSchemeLoaded] = React.useState(false)
+   const { login, logout, status: authStatus } = useAuthStore()
 
    useIsomorphicLayoutEffect(() => {
+      ;(async () => {
+         if (!authStatus) {
+            const res = await authService.getCurrentUser()
+            if (ApplicationError.isError(res)) {
+               logout()
+               return
+            }
+            login(res as any)
+         }
+      })()
+
       if (hasMounted.current) {
          return
       }
@@ -39,28 +56,43 @@ export default function RootLayout() {
          // Adds the background color to the html element to prevent white background on overscroll.
          document.documentElement.classList.add("bg-background")
       }
+
       setAndroidNavigationBar(colorScheme)
       setIsColorSchemeLoaded(true)
       hasMounted.current = true
    }, [])
 
-   if (!isColorSchemeLoaded) {
-      return null
-   }
+   if (!isColorSchemeLoaded) return null
 
    return (
       <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
-         <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
-         <Stack>
-            <Stack.Screen
-               name="index"
-               options={{
-                  title: "Starter Base",
-                  headerRight: () => <ThemeToggle />,
-               }}
-            />
-         </Stack>
-         <PortalHost />
+         <ToastProvider>
+            <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
+            <Stack>
+               <Stack.Protected guard={authStatus}>
+                  <Stack.Screen
+                     name="(application)"
+                     options={{
+                        title: "base layout",
+                        headerRight: () => <ThemeToggle />,
+                        headerShown: false,
+                     }}
+                  />
+               </Stack.Protected>
+
+               <Stack.Protected guard={!authStatus}>
+                  <Stack.Screen
+                     name="(auth)"
+                     options={{
+                        headerRight: () => <ThemeToggle />,
+                        headerShown: false,
+                     }}
+                  />
+               </Stack.Protected>
+            </Stack>
+            <PortalHost />
+            <ToastContainer />
+         </ToastProvider>
       </ThemeProvider>
    )
 }

@@ -1,7 +1,6 @@
 import { z } from "zod"
 
 const envSchema = z.object({
-   // appwrite specific env
    EXPO_PUBLIC_APPWRITE_ENDPOINT: z.string().url(),
    EXPO_PUBLIC_APPWRIE_PROJECT_ID: z.string(),
    EXPO_PUBLIC_APPWRITE_PLATFORM_ID: z.string(),
