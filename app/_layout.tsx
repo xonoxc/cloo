@@ -4,7 +4,7 @@ import { DarkTheme, DefaultTheme, Theme, ThemeProvider } from "@react-navigation
 import { Stack } from "expo-router"
 import { StatusBar } from "expo-status-bar"
 import * as React from "react"
-import { Platform } from "react-native"
+import { useIsomorphicLayoutEffect } from "~/utils/isomoriphicEffect"
 import { NAV_THEME } from "~/lib/constants"
 import { useColorScheme } from "~/lib/useColorScheme"
 import { PortalHost } from "@rn-primitives/portal"
@@ -14,7 +14,6 @@ import { authService } from "~/services/auth/auth"
 import { useAuthStore } from "~/store/auth"
 import { ApplicationError } from "~/utils/error/error"
 import { ToastContainer, ToastProvider } from "~/hooks/useToast"
-import { NavigationContainer } from "@react-navigation/native"
 
 const LIGHT_THEME: Theme = {
    ...DefaultTheme,
@@ -25,10 +24,7 @@ const DARK_THEME: Theme = {
    colors: NAV_THEME.dark,
 }
 
-export {
-   // Preventing redirects from being shown in the web console
-   ErrorBoundary,
-} from "expo-router"
+export { ErrorBoundary } from "expo-router"
 
 export default function RootLayout() {
    const hasMounted = React.useRef(false)
@@ -50,11 +46,6 @@ export default function RootLayout() {
 
       if (hasMounted.current) {
          return
-      }
-
-      if (Platform.OS === "web") {
-         // Adds the background color to the html element to prevent white background on overscroll.
-         document.documentElement.classList.add("bg-background")
       }
 
       setAndroidNavigationBar(colorScheme)
@@ -96,6 +87,3 @@ export default function RootLayout() {
       </ThemeProvider>
    )
 }
-
-const useIsomorphicLayoutEffect =
-   Platform.OS === "web" && typeof window === "undefined" ? React.useEffect : React.useLayoutEffect
