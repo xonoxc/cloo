@@ -15,6 +15,7 @@ import { authService } from "~/services/auth/auth"
 import { ApplicationError } from "~/utils/error/error"
 import { useAuthStore } from "~/store/auth"
 import { Link } from "expo-router"
+import { Image } from "expo-image"
 
 const signUpSchema = z.object({
    name: z.string().min(2, "Name is too short"),
@@ -60,9 +61,12 @@ export default function SignUpScreen() {
             contentContainerStyle={{ flexGrow: 1 }}
             keyboardShouldPersistTaps="handled"
          >
-            <View className="flex-1 justify-top px-6 py-52 bg-black">
-               <View className="mb-12 items-center">
-                  <Text className="text-4xl font-extrabold text-white">Cloo</Text>
+            <View className="flex-1 justify-top px-6 py-44 bg-black">
+               <View className="mb-8 items-center">
+                  <Image
+                     source={require("../../assets/images/cloo_logo.png")}
+                     style={{ width: 100, height: 100 }}
+                  />
                   <Text className="text-base text-gray-400 text-center mt-2">
                      Create an account to get started!
                   </Text>

@@ -1,14 +1,28 @@
 import { Tabs } from "expo-router"
 import { Ionicons } from "@expo/vector-icons"
+import { useTheme } from "@react-navigation/native"
 
 export default function ApplicationLayout() {
+   const { colors, dark } = useTheme()
+
    return (
       <Tabs
          screenOptions={{
-            tabBarActiveTintColor: "white",
+            tabBarActiveTintColor: dark ? "#fff" : "#000",
+            headerShadowVisible: false,
+
+            headerTitleStyle: {
+               fontSize: 40,
+               fontWeight: "bold",
+               color: colors.text,
+            },
+            headerStyle: {
+               marginBottom: 100,
+            },
             tabBarStyle: {
-               backgroundColor: "#0f1014",
-               height: 70,
+               backdropFilter: "blur(10px)",
+               opacity: 0.8,
+               height: 60,
                paddingTop: 10,
                borderRadius: 10,
             },
@@ -17,7 +31,7 @@ export default function ApplicationLayout() {
          <Tabs.Screen
             name="folders"
             options={{
-               title: "folders",
+               title: "cloo",
                tabBarIcon: ({ color, size }) => (
                   <Ionicons name="folder" size={size} color={color} />
                ),

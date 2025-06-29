@@ -15,6 +15,7 @@ import { authService } from "~/services/auth/auth"
 import { ApplicationError } from "~/utils/error/error"
 import { useAuthStore } from "~/store/auth"
 import { Link } from "expo-router"
+import { Image } from "expo-image"
 
 const signInSchema = z.object({
    email: z.string().email("Enter a valid email"),
@@ -62,9 +63,12 @@ export default function SignInScreen() {
             keyboardShouldPersistTaps="handled"
          >
             <View className="flex-1 justify-top px-6 py-52 bg-black">
-               <View className="mb-12 items-center">
-                  <Text className="text-4xl font-extrabold text-white">Cloo</Text>
-                  <Text className="text-base text-gray-400 text-center mt-2">
+               <View className="mb-8 items-center">
+                  <Image
+                     source={require("../../assets/images/cloo_logo.png")}
+                     style={{ width: 100, height: 100 }}
+                  />
+                  <Text className="text-base text-gray-400 text-center mt-1">
                      Welcome back! Please sign in to your account.
                   </Text>
                </View>

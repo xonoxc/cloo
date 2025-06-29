@@ -8,8 +8,7 @@ export class AppwriteService {
    constructor() {
       this.client = new Client()
          .setEndpoint(env.EXPO_PUBLIC_APPWRITE_ENDPOINT)
-         .setProject(env.EXPO_PUBLIC_APPWRIE_PROJECT_ID)
-         .setPlatform(env.EXPO_PUBLIC_APPWRITE_PLATFORM_ID)
+         .setProject(env.EXPO_PUBLIC_APPWRITE_PROJECT_ID)
 
       this.account = new Account(this.client)
    }
