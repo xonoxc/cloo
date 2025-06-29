@@ -1,30 +1,21 @@
 import { Tabs } from "expo-router"
 import { Ionicons } from "@expo/vector-icons"
 import { useTheme } from "@react-navigation/native"
+import { CustomTabBar } from "~/components/CustomTabBar"
 
 export default function ApplicationLayout() {
    const { colors, dark } = useTheme()
 
    return (
       <Tabs
+         tabBar={props => <CustomTabBar {...props} />}
          screenOptions={{
             tabBarActiveTintColor: dark ? "#fff" : "#000",
             headerShadowVisible: false,
-
             headerTitleStyle: {
                fontSize: 40,
                fontWeight: "bold",
                color: colors.text,
-            },
-            headerStyle: {
-               marginBottom: 100,
-            },
-            tabBarStyle: {
-               backdropFilter: "blur(10px)",
-               opacity: 0.8,
-               height: 60,
-               paddingTop: 10,
-               borderRadius: 10,
             },
          }}
       >
