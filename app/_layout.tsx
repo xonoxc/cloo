@@ -30,6 +30,7 @@ export default function RootLayout() {
    const hasMounted = React.useRef(false)
    const { colorScheme, isDarkColorScheme } = useColorScheme()
    const [isColorSchemeLoaded, setIsColorSchemeLoaded] = React.useState(false)
+   const [isAuthLoaded, setIsAuthLoaded] = React.useState(false)
    const { login, logout, status: authStatus } = useAuthStore()
 
    useIsomorphicLayoutEffect(() => {
@@ -42,6 +43,7 @@ export default function RootLayout() {
             }
             login(res as any)
          }
+         setIsAuthLoaded(true)
       })()
 
       if (hasMounted.current) {
@@ -53,7 +55,7 @@ export default function RootLayout() {
       hasMounted.current = true
    }, [])
 
-   if (!isColorSchemeLoaded) return null
+   if (!isColorSchemeLoaded || !isAuthLoaded) return null
 
    return (
       <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>

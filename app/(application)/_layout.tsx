@@ -4,19 +4,14 @@ import { useTheme } from "@react-navigation/native"
 import { CustomTabBar } from "~/components/CustomTabBar"
 
 export default function ApplicationLayout() {
-   const { colors, dark } = useTheme()
+   const { dark } = useTheme()
 
    return (
       <Tabs
          tabBar={props => <CustomTabBar {...props} />}
          screenOptions={{
             tabBarActiveTintColor: dark ? "#fff" : "#000",
-            headerShadowVisible: false,
-            headerTitleStyle: {
-               fontSize: 40,
-               fontWeight: "bold",
-               color: colors.text,
-            },
+            headerShown: false,
          }}
       >
          <Tabs.Screen
