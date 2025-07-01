@@ -28,6 +28,9 @@ export function CustomTabBar({ state, descriptors, navigation }: BottomTabBarPro
                })
                if (!isFocused && !event.defaultPrevented) {
                   navigation.navigate(route.name)
+                  setTimeout(() => {
+                     setIsExpanded(true)
+                  }, 1000)
                }
             }
 

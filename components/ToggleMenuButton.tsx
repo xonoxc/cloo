@@ -37,7 +37,7 @@ export function ToggleMenuButton(props: ToggleMenuButtonProps) {
 
    return (
       <TouchableOpacity
-         className="w-16 h-16 rounded-full bg-blue-500 justify-center items-center z-10 absolute bottom-0 right-0 shadow-lg"
+         className="w-16 h-16 rounded-full bg-slate-500 justify-center items-center z-10 absolute bottom-0 right-0 shadow-lg"
          onPress={props.onPress}
          activeOpacity={0.8}
       >

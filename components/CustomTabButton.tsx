@@ -48,11 +48,11 @@ export const CustomTabButton = forwardRef<View, CustomTabButtonProps>((props, re
             ${props.isFocused ? "bg-indigo-500" : "bg-white"}
           `}
             onPressIn={() => {
-               scale.value = withSpring(0.9, { mass: 0.5, stiffness: 150 })
+               scale.value = withSpring(0.9, { mass: 0.5, stiffness: 300 })
                props.exrtraActionOnPress?.()
             }}
             onPressOut={() => {
-               scale.value = withSpring(1, { mass: 0.5, stiffness: 150 })
+               scale.value = withSpring(1, { mass: 0.5, stiffness: 300 })
             }}
          >
             <Ionicons name={props.icon} size={24} color={props.isFocused ? "#fff" : "#64748B"} />

@@ -14,6 +14,7 @@ import { authService } from "~/services/auth/auth"
 import { useAuthStore } from "~/store/auth"
 import { ApplicationError } from "~/utils/error/error"
 import { ToastContainer, ToastProvider } from "~/hooks/useToast"
+import { SafeAreaProvider, initialWindowMetrics } from "react-native-safe-area-context"
 
 const LIGHT_THEME: Theme = {
    ...DefaultTheme,
@@ -58,34 +59,36 @@ export default function RootLayout() {
    if (!isColorSchemeLoaded || !isAuthLoaded) return null
 
    return (
-      <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
-         <ToastProvider>
-            <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
-            <Stack>
-               <Stack.Protected guard={authStatus}>
-                  <Stack.Screen
-                     name="(application)"
-                     options={{
-                        title: "base layout",
-                        headerRight: () => <ThemeToggle />,
-                        headerShown: false,
-                     }}
-                  />
-               </Stack.Protected>
+      <SafeAreaProvider initialMetrics={initialWindowMetrics}>
+         <ThemeProvider value={isDarkColorScheme ? DARK_THEME : LIGHT_THEME}>
+            <ToastProvider>
+               <StatusBar style={isDarkColorScheme ? "light" : "dark"} />
+               <Stack>
+                  <Stack.Protected guard={authStatus}>
+                     <Stack.Screen
+                        name="(application)"
+                        options={{
+                           title: "base layout",
+                           headerRight: () => <ThemeToggle />,
+                           headerShown: false,
+                        }}
+                     />
+                  </Stack.Protected>
 
-               <Stack.Protected guard={!authStatus}>
-                  <Stack.Screen
-                     name="(auth)"
-                     options={{
-                        headerRight: () => <ThemeToggle />,
-                        headerShown: false,
-                     }}
-                  />
-               </Stack.Protected>
-            </Stack>
-            <PortalHost />
-            <ToastContainer />
-         </ToastProvider>
-      </ThemeProvider>
+                  <Stack.Protected guard={!authStatus}>
+                     <Stack.Screen
+                        name="(auth)"
+                        options={{
+                           headerRight: () => <ThemeToggle />,
+                           headerShown: false,
+                        }}
+                     />
+                  </Stack.Protected>
+               </Stack>
+               <PortalHost />
+               <ToastContainer />
+            </ToastProvider>
+         </ThemeProvider>
+      </SafeAreaProvider>
    )
 }
