@@ -8,7 +8,9 @@ class AuthService extends AppwriteService {
     * this method helps getting the account from the server
     * **/
    public async signIn(email: string, password: string) {
-      const result = await attempt(() => this.account.createEmailPasswordSession(email, password))
+      const result = await attempt(() =>
+         this.account.createEmailPasswordSession(email, password)
+      )
       if (!result.ok) {
          return authErrorHandler.handleErrors(result.error)
       }

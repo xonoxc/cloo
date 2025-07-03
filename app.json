@@ -9,7 +9,7 @@
       "userInterfaceStyle": "automatic",
       "newArchEnabled": true,
       "experiments": {
-         "reactCompiler": true
+         "typedRoutes": true
       },
       "splash": {
          "image": "./assets/images/cloo_logo.png",
@@ -22,9 +22,11 @@
       },
       "android": {
          "adaptiveIcon": {
-            "foregroundImage": "./assets/images/cloo_logo.png",
+            "foregroundImage": "./assets/images/cloo_no_text.png",
             "backgroundColor": "#0f1014"
-         }
+         },
+         "softwareKeyboardLayoutMode": "pan",
+         "package": "com.andro.arpit"
       },
       "web": {
          "bundler": "metro",
@@ -32,8 +34,11 @@
          "favicon": "./assets/images/favicon.png"
       },
       "plugins": ["expo-router"],
-      "experiments": {
-         "typedRoutes": true
+      "extra": {
+         "router": {},
+         "eas": {
+            "projectId": "da8054e9-587c-4a16-864e-02fea26426f9"
+         }
       }
    }
 }

@@ -20,6 +20,7 @@ export default function ApplicationLayout() {
             },
             tabBarActiveTintColor: dark ? "#fff" : "#000",
             headerShown: false,
+            tabBarHideOnKeyboard: true,
          }}
       >
          <Tabs.Screen
